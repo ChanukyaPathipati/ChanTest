@@ -163,3 +163,36 @@ resource "helm_release" "webapp" {
 
   depends_on = [ null_resource.update_kubeconfig, module.eks ]
 }
+
+
+# ----------- Monitoring ----------------
+
+resource "helm_release" "prometheus" {
+  name       = "prometheus"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
+  version    = "45.6.0" # use latest stable at the time
+
+  namespace  = "monitoring"
+
+  create_namespace = true
+
+  values = [
+    file("${path.module}/my-webapp/prometheus_values.yaml")
+  ]
+}
+
+resource "helm_release" "grafana" {
+  name       = "grafana"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "grafana"
+  version    = "6.45.0"
+
+  namespace  = "monitoring"
+
+  depends_on = [helm_release.prometheus]
+
+  values = [
+    file("${path.module}/my-webapp/grafana_values.yaml")
+  ]
+}

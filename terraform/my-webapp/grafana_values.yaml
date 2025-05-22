@@ -1,0 +1,13 @@
+# grafana_values.yaml
+
+adminUser: admin
+adminPassword: changeme123
+
+service:
+  type: LoadBalancer
+  port: 80
+
+ingress:
+  enabled: false
+
+# You can enable ingress and customize ingress hosts if needed

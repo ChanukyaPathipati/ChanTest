@@ -1,0 +1,11 @@
+# prometheus_values.yaml
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+serviceAccount:
+  create: true
+  name: prometheus-sa
+
+# Enable scraping on the cluster - default is good for Kubernetes components
